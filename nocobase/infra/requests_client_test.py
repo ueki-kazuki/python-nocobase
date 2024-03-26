@@ -4,7 +4,7 @@ import pytest
 import requests
 
 from .requests_client import NocobaseRequestsClient, requests as requests_lib
-from .exceptions import NocobaseAPIError
+from ..exceptions import NocobaseAPIError
 
 
 @mock.patch.object(requests_lib, "Session")

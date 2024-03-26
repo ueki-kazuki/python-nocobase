@@ -1,7 +1,7 @@
 from typing import Optional
-from .nocobase import AuthToken
-from .api import NocobaseAPI
-from .exceptions import NocobaseAPIError
+from ..nocobase import AuthToken
+from ..api import NocobaseAPI
+from ..exceptions import NocobaseAPIError
 
 import requests
 
