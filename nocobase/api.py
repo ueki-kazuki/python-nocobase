@@ -3,17 +3,17 @@ from urllib.parse import urljoin
 from enum import Enum
 
 
-class NocobaseAPIUris(Enum):
+class NocoBaseAPIUris(Enum):
     V1_DB_DATA_PREFIX = "api/"
     V1_DB_META_PREFIX = "api/"
 
 
-class NocobaseAPI:
+class NocoBaseAPI:
     def __init__(self, base_uri: str):
         self.__base_data_uri = urljoin(
-            base_uri + "/", NocobaseAPIUris.V1_DB_DATA_PREFIX.value
+            base_uri + "/", NocoBaseAPIUris.V1_DB_DATA_PREFIX.value
         )
-        # self.__base_meta_uri = urljoin(base_uri + "/", NocobaseAPIUris.V1_DB_META_PREFIX.value)
+        # self.__base_meta_uri = urljoin(base_uri + "/", NocoBaseAPIUris.V1_DB_META_PREFIX.value)
 
     def get_collections_uri(self) -> str:
         return (

@@ -1,18 +1,18 @@
 from typing import Optional
 from ..nocobase import AuthToken
-from ..api import NocobaseAPI
-from ..exceptions import NocobaseAPIError
+from ..api import NocoBaseAPI
+from ..exceptions import NocoBaseAPIError
 
 import requests
 
-class NocobaseRequestsClient:
+class NocoBaseRequestsClient:
     def __init__(self, auth_token: AuthToken, base_uri: str):
         self.__session = requests.Session()
         self.__session.headers.update(
             auth_token.get_header(),
         )
         self.__session.headers.update({"Content-Type": "application/json"})
-        self.__api_info = NocobaseAPI(base_uri)
+        self.__api_info = NocoBaseAPI(base_uri)
 
     def _request(self, method: str, url: str, *args, **kwargs):
         response = self.__session.request(method, url, *args, **kwargs)
@@ -23,7 +23,7 @@ class NocobaseRequestsClient:
         except requests.exceptions.JSONDecodeError:
             ...
         except requests.exceptions.HTTPError as http_error:
-            raise NocobaseAPIError(
+            raise NocoBaseAPIError(
                 message=str(http_error),
                 status_code=http_error.response.status_code,
                 response_json=response_json,
