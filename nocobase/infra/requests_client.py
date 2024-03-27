@@ -4,7 +4,7 @@ from typing import Optional, List, Any
 import requests
 
 from ..api import NocoBaseAPI
-from ..exceptions import NocoBaseAPIError
+from ..exceptions import NocoBaseAPIError, NocoBaseCollectionNotFoundError
 from ..nocobase import AuthToken, NocoBaseClient
 
 
@@ -16,7 +16,6 @@ class NocoBaseRequestsClient:
         )
         self.__session.headers.update({"Content-Type": "application/json"})
         self.__api_info = NocoBaseAPI(base_uri)
-        self.collections = Collections(self)
 
     def _request(self, method: str, url: str, *args, **kwargs):
         response = self.__session.request(method, url, *args, **kwargs)
@@ -35,6 +34,16 @@ class NocoBaseRequestsClient:
             )
 
         return response
+
+    def collections(self):
+        return Collections(self)
+
+    def collection(self, name: str):
+        collections = self.list_collections()
+        for c in collections:
+            if c["name"] == name:
+                return Collection(self, c)
+        raise NocoBaseCollectionNotFoundError(f"Collection {name} is not found")
 
     def list_collections(self) -> List[dict]:
         resp = self._request("GET", self.__api_info.get_collections_uri()).json()
