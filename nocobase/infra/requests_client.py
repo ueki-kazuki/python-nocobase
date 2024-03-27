@@ -1,5 +1,5 @@
 import json
-from typing import Optional, List
+from typing import Optional, List, Any
 
 import requests
 
@@ -36,13 +36,25 @@ class NocoBaseRequestsClient:
 
         return response
 
-    def list_collections(self) -> dict:
-        return self._request("GET", self.__api_info.get_collections_uri()).json()
+    def list_collections(self) -> List[dict]:
+        resp = self._request("GET", self.__api_info.get_collections_uri()).json()
+        return resp["data"] if "data" in resp else resp
 
-    def list(self, collection: str, params: Optional[dict]) -> dict:
-        return self._request(
-            "GET", self.__api_info.get_collection_uri_for(collection), params=params
-        ).json()
+    def list(self, collection: str, params: Optional[dict]) -> Any:
+        while True:
+            resp = self._request(
+                "GET", self.__api_info.get_collection_uri_for(collection), params=params
+            ).json()
+            for d in resp["data"]:
+                yield d
+
+            page = resp["meta"]["page"] or 1
+            total = resp["meta"]["totalPage"]
+            if page == total:
+                break
+            params = params or {}
+            params["page"] = page + 1
+        
 
     def get(self, collection: str, params: dict) -> dict:
         return self._request(
@@ -79,13 +91,19 @@ class Collection(NocoBaseClient):
 
     def list(
         self,
+        page: Optional[int] = None,
+        page_size: Optional[int] = None,
         filter: Optional[dict] = None,
         sort: List[str] = [],
         fields: List[str] = [],
         appends: List[str] = [],
         excepts: List[str] = [],
-    ) -> dict:
+    ) -> List[dict]:
         params = {}
+        if page:
+            params["page"] = page
+        if page_size:
+            params["pageSize"] = page_size
         if filter:
             params["filter"] = json.dumps(filter)
         params["sort"] = sort
@@ -153,7 +171,7 @@ class Collections:
 
     def list(self) -> list[Collection]:
         collections = []
-        for raw in self.requester.list_collections()["data"]:
+        for raw in self.requester.list_collections():
             collections.append(Collection(self.requester, raw))
         return collections
 

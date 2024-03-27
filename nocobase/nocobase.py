@@ -20,12 +20,14 @@ class NocoBaseClient:
     @abstractmethod
     def list(
         self,
+        page: Optional[int] = None,
+        page_size: Optional[int] = None,
         filter: Optional[dict] = None,
         sort: List[str] = [],
         fields: List[str] = [],
         appends: List[str] = [],
         excepts: List[str] = [],
-    ) -> dict:
+    ) -> List[dict]:
         pass
 
     @abstractmethod
