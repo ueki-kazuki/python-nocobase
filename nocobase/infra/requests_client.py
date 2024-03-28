@@ -63,14 +63,14 @@ class NocoBaseRequestsClient:
                 break
             params = params or {}
             params["page"] = page + 1
-        
 
     def get(self, collection: str, params: dict) -> dict:
-        return self._request(
+        resp = self._request(
             "GET",
             self.__api_info.get_collection_uri_for(collection, "get"),
             params=params,
         ).json()
+        return resp["data"]
 
     def create(self, collection: str, params: dict, body: dict) -> dict:
         return self._request(
