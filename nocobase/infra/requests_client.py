@@ -57,6 +57,10 @@ class NocoBaseRequestsClient:
             for d in resp["data"]:
                 yield d
 
+            # if page param is specified, do not fetch next page
+            if params and "page" in params:
+                break
+
             page = resp["meta"]["page"] or 1
             total = resp["meta"]["totalPage"]
             if page == total:
