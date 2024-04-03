@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='nocobase',
-   version='0.0.6',
+   version='0.0.7',
    author='Kazuki UEKI',
    author_email='ueki.kazuki@gmail.com',
    packages=find_packages(),
