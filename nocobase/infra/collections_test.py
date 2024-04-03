@@ -23,4 +23,3 @@ def test_get_params_is_valid():
     collections = Collections(mock_requester)
     collections.get("sample")
     mock_requester.list_collections.assert_called_once()
-

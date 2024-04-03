@@ -73,6 +73,7 @@ def test_request_correctory_called_from_list_collections(mock_requests_session):
         client.list_collections()
         mock_request.assert_called_once_with("GET", "/api/collections:list")
 
+
 @mock.patch.object(requests_lib, "Session")
 def test_collection(mock_requests_session):
     mock_session = mock.Mock()
@@ -85,8 +86,9 @@ def test_collection(mock_requests_session):
 
     client = NocoBaseRequestsClient(mock.Mock(), "")
     collection = client.collection("sample")
-    assert type(collection) == Collection
+    assert type(collection) is Collection
     mock_session.request.assert_called_once_with("GET", "/api/collections:list")
+
 
 @mock.patch.object(requests_lib, "Session")
 def test_collection_notfound(mock_requests_session):

@@ -12,9 +12,9 @@ def test_list_params_is_valid():
     m_employee.list()
     mock_requester.list.return_value = {"data": []}
     mock_requester.list.assert_called_with(
-        "test",
-        {"sort": [], "fields": [], "appends": [], "except": []}
+        "test", {"sort": [], "fields": [], "appends": [], "except": []}
     )
+
 
 #
 # GET
@@ -24,9 +24,9 @@ def test_get_params_is_valid():
     m_employee = Collection(mock_requester, {"name": "test"})
     m_employee.get(id=1)
     mock_requester.get.assert_called_with(
-        "test",
-        {"filterByTk": 1, "sort": [], "fields": [], "appends": [], "except": []}
+        "test", {"filterByTk": 1, "sort": [], "fields": [], "appends": [], "except": []}
     )
+
 
 def test_get_with_filter_is_valid():
     mock_requester = mock.Mock()
@@ -34,8 +34,15 @@ def test_get_with_filter_is_valid():
     m_employee.get(filter={"emp_id": 1})
     mock_requester.get.assert_called_with(
         "test",
-        {"filter": '{"emp_id": 1}',"sort": [], "fields": [], "appends": [], "except": []}
+        {
+            "filter": '{"emp_id": 1}',
+            "sort": [],
+            "fields": [],
+            "appends": [],
+            "except": [],
+        },
     )
+
 
 #
 # Create
