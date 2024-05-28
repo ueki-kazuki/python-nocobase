@@ -35,6 +35,10 @@ class NocoBaseRequestsClient:
 
         return response
 
+    @property
+    def session(self):
+        return self.__session
+
     def collections(self):
         return Collections(self)
 
