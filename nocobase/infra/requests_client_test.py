@@ -105,3 +105,11 @@ def test_collection_notfound(mock_requests_session):
         _ = client.collection("not_exist")
     mock_session.request.assert_called_once_with("GET", "/api/collections:list")
     assert exc_info.value.args[0] == "Collection not_exist is not found"
+
+@mock.patch.object(requests_lib, "Session")
+def test_session(mock_requests_session):
+    mock_session = mock.Mock()
+    mock_requests_session.return_value = mock_session
+
+    client = NocoBaseRequestsClient(mock.Mock(), "")
+    assert type(client.session) is not None
