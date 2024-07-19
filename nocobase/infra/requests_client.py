@@ -54,6 +54,7 @@ class NocoBaseRequestsClient:
         return resp["data"] if "data" in resp else resp
 
     def list(self, collection: str, params: Optional[dict]) -> Any:
+        only_this_page = True if (params and "page" in params) else False
         while True:
             resp = self._request(
                 "GET", self.__api_info.get_collection_uri_for(collection), params=params
@@ -62,7 +63,7 @@ class NocoBaseRequestsClient:
                 yield d
 
             # if page param is specified, do not fetch next page
-            if params and "page" in params:
+            if only_this_page:
                 break
 
             page = resp["meta"]["page"] or 1
