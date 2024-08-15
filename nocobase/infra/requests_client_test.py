@@ -58,6 +58,24 @@ def test_session_request_correctory_called_from_list(mock_requests_session):
     _ = list(client.list(collection="sample", params={}))
     mock_session.request.assert_called_once_with("GET", "/api/sample:list", params={})
 
+@mock.patch.object(requests_lib, "Session")
+def test_session_return_empty_list(mock_requests_session):
+    mock_session = mock.Mock()
+    mock_requests_session.return_value = mock_session
+
+    mock_resp = mock.Mock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "data": [],
+        "meta": {"page": 1, "pageSize": 20, "totalPage": 0},
+    }
+    mock_session.request.return_value = mock_resp
+
+    client = NocoBaseRequestsClient(mock.Mock(), "")
+    result = list(client.list(collection="sample", params={}))
+    mock_session.request.assert_called_once_with("GET", "/api/sample:list", params={})
+    assert 0 == len(result)
+
 
 @mock.patch.object(requests_lib, "Session")
 def test_request_correctory_called_from_list_collections(mock_requests_session):

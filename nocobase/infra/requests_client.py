@@ -68,7 +68,7 @@ class NocoBaseRequestsClient:
 
             page = resp["meta"]["page"] or 1
             total = resp["meta"]["totalPage"]
-            if page == total:
+            if total == 0 or page == total:
                 break
             params = params or {}
             params["page"] = page + 1
