@@ -50,8 +50,7 @@ class NocoBaseRequestsClient:
         raise NocoBaseCollectionNotFoundError(f"Collection {name} is not found")
 
     def list_collections(self) -> List[dict]:
-        resp = self._request("GET", self.__api_info.get_collections_uri()).json()
-        return resp["data"] if "data" in resp else resp
+        return self.list("collections")
 
     def list(self, collection: str, params: Optional[dict]) -> Any:
         only_this_page = True if (params and "page" in params) else False
