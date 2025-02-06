@@ -16,13 +16,7 @@ class NocoBaseAPI:
         # self.__base_meta_uri = urljoin(base_uri + "/", NocoBaseAPIUris.V1_DB_META_PREFIX.value)
 
     def get_collections_uri(self) -> str:
-        return (
-            urljoin(
-                self.__base_data_uri,
-                "/".join(("collections",)),
-            )
-            + ":list"
-        )
+        return self.get_collection_uri_for("collections", "list")
 
     def get_collection_uri_for(self, collection: str, operation: Optional[str] = "list") -> str:
         return "{}:{}".format(
